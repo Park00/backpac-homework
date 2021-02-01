@@ -1,0 +1,210 @@
+@import "normalize.css";
+
+@mixin thumbnail-wrapper($width){
+  .thumbnail-wrapper{
+    width: $width;
+    .thumbnail {
+      position: relative;
+      padding-top: 100%; /* 1:1 ratio */
+      overflow: hidden;
+      img{
+        position: absolute;
+        top: 0;
+        left: 0;
+        max-width: 100%;
+        height: auto;
+        -webkit-transform: translate(0%,0%);
+        -ms-transform: translate(0%,0%);
+        transform: translate(0%,0%);
+      }
+    }
+  }
+}
+@mixin stars(){
+  .stars--0{color: grey;}
+  .stars--1{color: #ffd700;}
+  .stars--desc{
+    color: grey;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+@mixin text-ellipsis(){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+//IE에서는 ...이 보이지 않음
+@mixin multiple-line-ellipsis($line, $line-height){
+  display: -webkit-box;
+  word-wrap: break-word;
+  -webkit-line-clamp: $line;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: $line * $line-height;
+  line-height: $line-height;
+}
+$border-color: #D3D3D3;
+
+h1{
+  margin: 0;
+  font-size: 16px;
+}
+
+.__box1, .__box2{
+  display: flex;
+  flex-direction: column;
+}
+
+.container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  .card-type-1{
+    width: 200px;
+    height: 100%;
+    margin: 5px;
+    font-size: 16px;
+    border: 1px solid $border-color;
+    background-color: #fafafa;
+    @include thumbnail-wrapper(200px);
+    .contentWrap{
+      .__box1 {
+        padding: 10px;
+        .subTitle{
+          font-size: 14px;
+          color: grey;
+        }
+        .bottomText{
+          margin: 25px 0 0;
+          @include text-ellipsis();
+        }
+        .highlight{
+          color: red;
+          @include text-ellipsis();
+        }
+        .lineThrough{
+          @include text-ellipsis();
+          font-size: 12px;
+          color: grey;
+          text-decoration: line-through;
+        }
+      }
+      .__box2{
+        @include stars();
+        padding: 10px;
+        height: 36px;
+        justify-content: center;
+      }
+    }
+    hr{
+      margin: 0;
+      border: 0;
+      height: 1px;
+      background-color: $border-color;
+    }
+  }
+  .card-type-2{
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    height: 100%;
+    margin: 5px;
+    font-size: 16px;
+    border: 1px solid $border-color;
+    background-color: #fafafa;
+    @include thumbnail-wrapper(165px);
+    .content-wrapper{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+      width: 250px;
+      .title{
+        font-weight: bold;
+      }
+      .content{
+        @include multiple-line-ellipsis(3, 18px);
+        color: grey;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+      .__box2{
+        @include stars();
+        .score-area{
+          display: flex;
+          .bar{
+            color: $border-color;
+          }
+          .author{
+            @include text-ellipsis();
+            display: block;
+            color: grey;
+          }
+        }
+      }
+    }
+  }
+
+  .textarea-wrap{
+    display: flex;
+    width: 300px;
+    height: 100%;
+    padding: 10px;
+    cursor: text;
+
+    .textarea-box{
+      display: flex;
+      width: 100%;
+      position: relative;
+      padding: 10px 10px 18px;
+      border: 1px solid gray;
+      border-radius: 4px;
+      &.readonly{
+        textarea {
+          pointer-events: none;
+        }
+      }
+      &.disabled{
+        background-color: lightgrey;
+
+        textarea {
+          pointer-events: none;
+          color: red;
+          background-color: lightgrey;
+        }
+      }
+      &:hover{
+        border: 1px solid black;
+      }
+      .textarea-label{
+        z-index: 1;
+        position: absolute;
+        bottom: 2px;
+        right: 3px;
+        font-size: 14px;
+        color: gray;
+      }
+      textarea{
+        width: 100%;
+        height: auto;
+        border: 0;
+        resize: none;
+        overflow: auto;
+        &:focus{
+          outline: none;
+        }
+      }
+    }
+    .button-box{
+      .saveButton{
+        width: 100%;
+        height: 100%;
+        margin-left: 3px;
+      }
+    }
+  }
+}
